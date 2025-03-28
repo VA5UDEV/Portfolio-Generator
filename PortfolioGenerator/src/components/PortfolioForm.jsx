@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import service from "../appwrite/config";
 
-export default function PortfolioForm({ port }) {
+export default function PortfolioForm({ port, onSubmit }) {
   const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
       name: port?.name || "",
@@ -26,6 +26,7 @@ export default function PortfolioForm({ port }) {
 
   const handleProfileUpload = async (data) => {
     try {
+      console.log("Submitted Data:", data);
       if (!data.profileImage) throw new Error("No image selected");
 
       const uploadedImage = await service.uploadProfileImage(data.profileImage);
@@ -35,16 +36,20 @@ export default function PortfolioForm({ port }) {
         name: data.name || "",
         role: data.role || "",
         profile: data.profile || "",
-        skills: data.skills || [],
-        experience: data.experience || [],
-        education: data.education || [],
-        contact: data.contact || { email: "", phone: "", address: "" },
+        skills: data.skills.split(",").map((s) => s.trim()),
+        experience: data.experience.split(",").map((e) => e.trim()),
+        education: data.education.split(",").map((edu) => edu.trim()),
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
         profileImage: uploadedImage.$id,
       };
 
       const response = await service.savePortfolio(userData.$id, formData);
-      if (response) console.log("Profile updated successfully:", response);
-      else console.error("Failed to update profile");
+      if (response) {
+        console.log("Profile updated successfully:", response);
+        onSubmit(response);
+      } else console.error("Failed to update profile");
     } catch (error) {
       console.error("Error uploading profile image:", error);
     }
@@ -114,7 +119,7 @@ export default function PortfolioForm({ port }) {
             />
             <Input
               name="role"
-              placeholder="Your Role (e.g., Frontend Developer)"
+              placeholder="Your Role"
               {...register("role", { required: true })}
             />
             <Input
@@ -143,21 +148,20 @@ export default function PortfolioForm({ port }) {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-900">Contact</h3>
             <Input
-              name="contact.phone"
-              type="text"
+              name="phone"
               placeholder="Phone"
-              {...register("contact.phone", { required: true })}
+              {...register("phone", { required: true })}
             />
             <Input
-              name="contact.email"
+              name="email"
               type="email"
               placeholder="Email"
-              {...register("contact.email", { required: true })}
+              {...register("email", { required: true })}
             />
             <Input
-              name="contact.address"
+              name="address"
               placeholder="Address"
-              {...register("contact.address", { required: true })}
+              {...register("address", { required: true })}
             />
           </div>
 

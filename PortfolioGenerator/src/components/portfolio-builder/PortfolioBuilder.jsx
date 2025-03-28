@@ -13,7 +13,7 @@ export default function PortfolioBuilder() {
         {!isFinalized ? (
           <>
             {!userData ? (
-              <PortfolioForm />
+              <PortfolioForm onSubmit={setUserData} />
             ) : (
               <TemplateSelector onSelectTemplate={setSelectedTemplate} />
             )}

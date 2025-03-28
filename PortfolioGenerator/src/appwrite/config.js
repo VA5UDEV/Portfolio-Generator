@@ -16,7 +16,17 @@ export class Service {
 
   async savePortfolio(
     userid,
-    { name, role, profile, skills, experience, education, contact }
+    {
+      name,
+      role,
+      profile,
+      skills,
+      experience,
+      education,
+      email,
+      phone,
+      address,
+    }
   ) {
     try {
       return await this.databases.createDocument(
@@ -26,12 +36,14 @@ export class Service {
         {
           userid,
           name,
-          role, // Example: "Creative Designer"
-          profile, // Short profile description
-          skills, // Array of skills
-          experience, // Array of experience entries
-          education, // Array of education entries
-          contact: JSON.stringify(contact), // Object containing phone, email, address
+          role,
+          profile,
+          skills,
+          experience,
+          education,
+          email,
+          phone,
+          address,
         }
       );
     } catch (error) {
@@ -66,10 +78,23 @@ export class Service {
 
         return {
           ...portfolio,
-          contact: JSON.parse(portfolio.contact), // Convert back to object
+          contact: portfolio.contact
+            ? JSON.parse(portfolio.contact)
+            : {
+                email: "",
+                phone: "",
+                address: "",
+              },
+          skills: Array.isArray(portfolio.skills) ? portfolio.skills : [],
+          experience: Array.isArray(portfolio.experience)
+            ? portfolio.experience
+            : [],
+          education: Array.isArray(portfolio.education)
+            ? portfolio.education
+            : [],
         };
       } else {
-        return null; // No portfolio found
+        return null;
       }
     } catch (error) {
       console.error("Error fetching portfolio:", error.message);
