@@ -78,13 +78,6 @@ export class Service {
 
         return {
           ...portfolio,
-          contact: portfolio.contact
-            ? JSON.parse(portfolio.contact)
-            : {
-                email: "",
-                phone: "",
-                address: "",
-              },
           skills: Array.isArray(portfolio.skills) ? portfolio.skills : [],
           experience: Array.isArray(portfolio.experience)
             ? portfolio.experience
