@@ -4,7 +4,7 @@ const ProfessionalTemplate = ({ userData }) => {
   const profileImageSrc = userData.profileImageUrl || null;
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-8 text-gray-900 bg-gray-100 border border-gray-300 rounded-md">
+    <div id="portfolio-container" className="w-full max-w-3xl mx-auto p-8 text-gray-900 bg-gray-100 border border-gray-300 rounded-md">
       <div className="flex items-center space-x-4">
         {profileImageSrc ? (
           <img
