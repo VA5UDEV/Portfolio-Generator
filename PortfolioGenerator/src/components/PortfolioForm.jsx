@@ -11,8 +11,12 @@ export default function PortfolioForm({ port, onSubmit }) {
       role: port?.role || "",
       profile: port?.profile || "",
       skills: Array.isArray(port?.skills) ? port?.skills.join(", ") : "",
-      experience: Array.isArray(port?.experience) ? port?.experience.join(", ") : "",
-      education: Array.isArray(port?.education) ? port?.education.join(", ") : "",
+      experience: Array.isArray(port?.experience)
+        ? port?.experience.join(", ")
+        : "",
+      education: Array.isArray(port?.education)
+        ? port?.education.join(", ")
+        : "",
       email: port?.contact?.email || port?.email || "",
       phone: port?.contact?.phone || port?.phone || "",
       address: port?.contact?.address || port?.address || "",
@@ -28,19 +32,19 @@ export default function PortfolioForm({ port, onSubmit }) {
     try {
       setIsSubmitting(true);
       console.log("Submitted Data:", data);
-      
+
       let profileImageId = null;
-      
-      // Only attempt to upload if there's an image file and we have a backend service
+
       if (profileImageFile && service.uploadProfileImage) {
         try {
-          const uploadedImage = await service.uploadProfileImage(profileImageFile);
+          const uploadedImage = await service.uploadProfileImage(
+            profileImageFile
+          );
           if (uploadedImage) {
             profileImageId = uploadedImage.$id;
           }
         } catch (error) {
           console.error("Error uploading to backend:", error);
-          // Continue with local image if backend upload fails
         }
       }
 
@@ -49,20 +53,28 @@ export default function PortfolioForm({ port, onSubmit }) {
         name: data.name || "",
         role: data.role || "",
         profile: data.profile || "",
-        skills: data.skills.split(",").map((s) => s.trim()).filter(s => s), // Remove empty items
-        experience: data.experience.split(",").map((e) => e.trim()).filter(e => e),
-        education: data.education.split(",").map((edu) => edu.trim()).filter(edu => edu),
+        skills: data.skills
+          .split(",")
+          .map((s) => s.trim())
+          .filter((s) => s),
+        experience: data.experience
+          .split(",")
+          .map((e) => e.trim())
+          .filter((e) => e),
+        education: data.education
+          .split(",")
+          .map((edu) => edu.trim())
+          .filter((edu) => edu),
         contact: {
           email: data.email || "",
           phone: data.phone || "",
-          address: data.address || ""
+          address: data.address || "",
         },
-        // Add these flat properties for compatibility with preview
         email: data.email || "",
         phone: data.phone || "",
         address: data.address || "",
-        // Use either the backend image ID or the local file for preview
-        profileImage: profileImageId || profileImageFile
+        profileImage: profileImageId || null,
+        profileImageUrl: previewImage || null,
       };
 
       // If we're connected to backend
@@ -71,7 +83,10 @@ export default function PortfolioForm({ port, onSubmit }) {
           const response = await service.savePortfolio(userData.$id, formData);
           if (response) {
             console.log("Profile updated successfully:", response);
-            onSubmit(response);
+            onSubmit({
+              ...response,
+              profileImageUrl: previewImage, // Add the URL for preview
+            });
           } else {
             console.error("Failed to update profile");
             // Fall back to local data if backend save fails
@@ -97,7 +112,6 @@ export default function PortfolioForm({ port, onSubmit }) {
     const file = e.target.files[0];
     if (file) {
       setProfileImageFile(file);
-      // Create URL for preview
       const reader = new FileReader();
       reader.onloadend = () => setPreviewImage(reader.result);
       reader.readAsDataURL(file);
