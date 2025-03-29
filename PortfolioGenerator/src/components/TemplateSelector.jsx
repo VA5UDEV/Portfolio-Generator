@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/index";
 import "swiper/css";
 
 const templates = [
@@ -8,26 +8,31 @@ const templates = [
     id: "template1",
     name: "Minimalist",
     preview: "https://via.placeholder.com/200x300?text=Minimalist",
+    image: "https://via.placeholder.com/200x300?text=Minimalist",
   },
   {
     id: "template2",
     name: "Creative",
     preview: "https://via.placeholder.com/200x300?text=Creative",
+    image: "https://via.placeholder.com/200x300?text=Creative",
   },
   {
     id: "template3",
     name: "Professional",
     preview: "https://via.placeholder.com/200x300?text=Professional",
+    image: "https://via.placeholder.com/200x300?text=Professional",
   },
   {
     id: "template4",
     name: "Modern",
     preview: "https://via.placeholder.com/200x300?text=Modern",
+    image: "https://via.placeholder.com/200x300?text=Modern",
   },
   {
     id: "template5",
     name: "Classic",
     preview: "https://via.placeholder.com/200x300?text=Classic",
+    image: "https://via.placeholder.com/200x300?text=Classic",
   },
 ];
 
@@ -55,7 +60,7 @@ export default function TemplateSelector({ onSelectTemplate }) {
         </p>
       </div>
 
-      {/* Swiper Carousel Without Navigation Buttons */}
+      {/* Swiper Carousel */}
       <div className="w-full max-w-4xl overflow-hidden">
         <Swiper spaceBetween={20} slidesPerView={3} className="px-6">
           {templates.map((template) => (
@@ -74,6 +79,11 @@ export default function TemplateSelector({ onSelectTemplate }) {
                   alt={template.name}
                   className="w-full h-40 object-cover rounded-md mt-2"
                 />
+                {selectedTemplate === template.id && (
+                  <div className="mt-2 text-blue-600 font-semibold">
+                    Selected
+                  </div>
+                )}
               </div>
             </SwiperSlide>
           ))}

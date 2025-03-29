@@ -10,55 +10,94 @@ export default function PortfolioForm({ port, onSubmit }) {
       name: port?.name || "",
       role: port?.role || "",
       profile: port?.profile || "",
-      skills: port?.skills || [],
-      experience: port?.experience || [],
-      education: port?.education || [],
-      contact: {
-        email: port?.contact?.email || "",
-        phone: port?.contact?.phone || "",
-        address: port?.contact?.address || "",
-      },
+      skills: Array.isArray(port?.skills) ? port?.skills.join(", ") : "",
+      experience: Array.isArray(port?.experience) ? port?.experience.join(", ") : "",
+      education: Array.isArray(port?.education) ? port?.education.join(", ") : "",
+      email: port?.contact?.email || port?.email || "",
+      phone: port?.contact?.phone || port?.phone || "",
+      address: port?.contact?.address || port?.address || "",
     },
   });
 
   const userData = useSelector((state) => state.auth.userData);
   const [previewImage, setPreviewImage] = useState(null);
+  const [profileImageFile, setProfileImageFile] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleProfileUpload = async (data) => {
     try {
+      setIsSubmitting(true);
       console.log("Submitted Data:", data);
-      if (!data.profileImage) throw new Error("No image selected");
+      
+      let profileImageId = null;
+      
+      // Only attempt to upload if there's an image file and we have a backend service
+      if (profileImageFile && service.uploadProfileImage) {
+        try {
+          const uploadedImage = await service.uploadProfileImage(profileImageFile);
+          if (uploadedImage) {
+            profileImageId = uploadedImage.$id;
+          }
+        } catch (error) {
+          console.error("Error uploading to backend:", error);
+          // Continue with local image if backend upload fails
+        }
+      }
 
-      const uploadedImage = await service.uploadProfileImage(data.profileImage);
-      if (!uploadedImage) throw new Error("Profile image upload failed");
-
+      // Process form data
       const formData = {
         name: data.name || "",
         role: data.role || "",
         profile: data.profile || "",
-        skills: data.skills.split(",").map((s) => s.trim()),
-        experience: data.experience.split(",").map((e) => e.trim()),
-        education: data.education.split(",").map((edu) => edu.trim()),
-        email: data.email,
-        phone: data.phone,
-        address: data.address,
-        profileImage: uploadedImage.$id,
+        skills: data.skills.split(",").map((s) => s.trim()).filter(s => s), // Remove empty items
+        experience: data.experience.split(",").map((e) => e.trim()).filter(e => e),
+        education: data.education.split(",").map((edu) => edu.trim()).filter(edu => edu),
+        contact: {
+          email: data.email || "",
+          phone: data.phone || "",
+          address: data.address || ""
+        },
+        // Add these flat properties for compatibility with preview
+        email: data.email || "",
+        phone: data.phone || "",
+        address: data.address || "",
+        // Use either the backend image ID or the local file for preview
+        profileImage: profileImageId || profileImageFile
       };
 
-      const response = await service.savePortfolio(userData.$id, formData);
-      if (response) {
-        console.log("Profile updated successfully:", response);
-        onSubmit(response);
-      } else console.error("Failed to update profile");
+      // If we're connected to backend
+      if (userData && userData.$id && service.savePortfolio) {
+        try {
+          const response = await service.savePortfolio(userData.$id, formData);
+          if (response) {
+            console.log("Profile updated successfully:", response);
+            onSubmit(response);
+          } else {
+            console.error("Failed to update profile");
+            // Fall back to local data if backend save fails
+            onSubmit(formData);
+          }
+        } catch (error) {
+          console.error("Error saving to backend:", error);
+          // Fall back to local data
+          onSubmit(formData);
+        }
+      } else {
+        // Just pass the form data to parent if no backend
+        onSubmit(formData);
+      }
     } catch (error) {
-      console.error("Error uploading profile image:", error);
+      console.error("Error processing form:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setValue("profileImage", file);
+      setProfileImageFile(file);
+      // Create URL for preview
       const reader = new FileReader();
       reader.onloadend = () => setPreviewImage(reader.result);
       reader.readAsDataURL(file);
@@ -98,8 +137,8 @@ export default function PortfolioForm({ port, onSubmit }) {
                 No Image
               </div>
             )}
-            <Label className="cursor-pointer bg-gray-600 text-white px-2 py-0.5 rounded-md hover:bg-black text-xs md:text-sm mt-2">
-              Add
+            <Label className="cursor-pointer bg-gray-600 text-white px-4 py-1 rounded-md hover:bg-black text-xs md:text-sm mt-2">
+              Upload Image
               <Input
                 type="file"
                 accept="image/*"
@@ -112,66 +151,94 @@ export default function PortfolioForm({ port, onSubmit }) {
           {/* Information Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-900">Information</h3>
-            <Input
-              name="name"
-              placeholder="Your Name"
-              {...register("name", { required: true })}
-            />
-            <Input
-              name="role"
-              placeholder="Your Role"
-              {...register("role", { required: true })}
-            />
-            <Input
-              name="profile"
-              placeholder="Short Bio"
-              {...register("profile", { required: true })}
-            />
-            <Input
-              name="skills"
-              placeholder="Skills (comma-separated)"
-              {...register("skills", { required: true })}
-            />
-            <Input
-              name="experience"
-              placeholder="Experience (comma-separated)"
-              {...register("experience", { required: true })}
-            />
-            <Input
-              name="education"
-              placeholder="Education (comma-separated)"
-              {...register("education", { required: true })}
-            />
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                placeholder="Your Name"
+                {...register("name", { required: true })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="role">Role</Label>
+              <Input
+                id="role"
+                placeholder="Your Role"
+                {...register("role", { required: true })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="profile">Short Bio</Label>
+              <Input
+                id="profile"
+                placeholder="Short Bio"
+                {...register("profile", { required: true })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="skills">Skills</Label>
+              <Input
+                id="skills"
+                placeholder="Skills (comma-separated)"
+                {...register("skills", { required: true })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="experience">Experience</Label>
+              <Input
+                id="experience"
+                placeholder="Experience (comma-separated)"
+                {...register("experience", { required: true })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="education">Education</Label>
+              <Input
+                id="education"
+                placeholder="Education (comma-separated)"
+                {...register("education", { required: true })}
+              />
+            </div>
           </div>
 
           {/* Contact Section */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-900">Contact</h3>
-            <Input
-              name="phone"
-              placeholder="Phone"
-              {...register("phone", { required: true })}
-            />
-            <Input
-              name="email"
-              type="email"
-              placeholder="Email"
-              {...register("email", { required: true })}
-            />
-            <Input
-              name="address"
-              placeholder="Address"
-              {...register("address", { required: true })}
-            />
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone</Label>
+              <Input
+                id="phone"
+                placeholder="Phone"
+                {...register("phone", { required: true })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Email"
+                {...register("email", { required: true })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="address">Address</Label>
+              <Input
+                id="address"
+                placeholder="Address"
+                {...register("address", { required: true })}
+              />
+            </div>
           </div>
 
           {/* Submit Button */}
           <div>
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="w-full bg-blue-600 text-white py-2 text-sm md:text-base hover:bg-black"
             >
-              Continue →
+              {isSubmitting ? "Processing..." : "Continue →"}
             </Button>
           </div>
         </form>
