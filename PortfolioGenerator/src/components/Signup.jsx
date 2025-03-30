@@ -3,8 +3,8 @@ import { Input, Button, Label } from "./index";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import authService from "../appwrite/auth"; // Import Appwrite auth service
-import { login } from "../store/authslice"; // Redux action
+import authService from "../appwrite/auth";
+import { login } from "../store/authslice";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -25,8 +25,8 @@ export default function Signup() {
       if (userData) {
         const currentUser = await authService.getCurrentUser();
         if (currentUser) {
-          dispatch(login(currentUser)); // Store user in Redux
-          navigate("/"); // Redirect to home
+          dispatch(login(currentUser));
+          navigate("/");
         }
       }
     } catch (error) {
@@ -35,7 +35,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex items-center justify-center h-[82vh] bg-white">
+    <div className="flex items-center justify-center min-h-screen bg-white">
       <div className="w-full max-w-3xl flex items-center justify-between">
         {/* Left - Form Section */}
         <div className="w-1/2 pr-8">

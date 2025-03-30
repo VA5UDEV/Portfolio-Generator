@@ -51,7 +51,7 @@ export default function TemplateSelector({ onSelectTemplate }) {
   };
 
   return (
-    <div className="h-[82vh] flex flex-col items-center justify-center bg-white p-6">
+    <div className="min-h-[75vh] flex flex-col items-center justify-center bg-white p-6">
       {/* Title & Description */}
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold text-gray-900">Choose a Template</h2>
@@ -62,7 +62,7 @@ export default function TemplateSelector({ onSelectTemplate }) {
 
       {/* Swiper Carousel */}
       <div className="w-full max-w-4xl overflow-hidden">
-        <Swiper spaceBetween={20} slidesPerView={3} className="px-6">
+        <Swiper spaceBetween={20} slidesPerView={3.5} className="px-6">
           {templates.map((template) => (
             <SwiperSlide key={template.id}>
               <div

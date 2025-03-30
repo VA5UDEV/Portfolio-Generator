@@ -5,17 +5,13 @@ import App from "./App.jsx";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Hero from "./pages/Hero";
+import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Login from "./components/Login";
 import ForgetPass from "./pages/ForgetPass";
 import Signup from "./pages/Signup";
 import AuthLayout from "./components/AuthLayout";
 import PortfolioBuilder from "./components/portfolio-builder/PortfolioBuilder";
-import PortfolioForm from "./components/PortfolioForm";
-import TemplateSelector from "./components/TemplateSelector";
-import PortfolioPreview from "./components/PortfolioPreview";
-import ExportPortfolio from "./components/ExportPortfolio";
 
 const router = createBrowserRouter([
   {
@@ -24,13 +20,13 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Hero />,
+        element: <Home />,
       },
       {
-        path: "/home",
+        path: "/dashboard",
         element: (
           <AuthLayout authentication={true}>
-            <Home />
+            <Dashboard />
           </AuthLayout>
         ),
       },
@@ -65,24 +61,6 @@ const router = createBrowserRouter([
             <PortfolioBuilder />
           </AuthLayout>
         ),
-        children: [
-          {
-            path: "/builder/form",
-            element: <PortfolioForm />,
-          },
-          {
-            path: "/builder/template",
-            element: <TemplateSelector />,
-          },
-          {
-            path: "/builder/preview",
-            element: <PortfolioPreview />,
-          },
-          {
-            path: "/builder/export",
-            element: <ExportPortfolio />,
-          },
-        ],
       },
     ],
   },

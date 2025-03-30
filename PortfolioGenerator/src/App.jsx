@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import "./index.css";
 import authService from "./appwrite/auth";
 import { login, logout } from "./store/authslice";
-import { Header, Footer } from "./components";
+import { Header } from "./components";
 import { Outlet } from "react-router-dom";
 
 
@@ -31,7 +31,6 @@ function App() {
         <main className="flex-grow">
           <Outlet />
         </main>
-        {/* <Footer /> */}
       </div>
     </div>
   ) : null;

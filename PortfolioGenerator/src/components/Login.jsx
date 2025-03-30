@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Input, Button, Label } from "./index";
 import { useNavigate, Link } from "react-router-dom";
-import authService from "../appwrite/auth"; // Appwrite auth service
+import authService from "../appwrite/auth";
 import { useDispatch } from "react-redux";
-import { login } from "../store/authslice"; // Redux action
+import { login } from "../store/authslice";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -21,15 +21,15 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear errors before new attempt
+    setError("");
 
     try {
       const user = await authService.login(formData);
       if (user) {
         const currentUser = await authService.getCurrentUser();
         if (currentUser) {
-          dispatch(login(currentUser)); // Store in Redux
-          navigate("/"); // Redirect to home
+          dispatch(login(currentUser));
+          navigate("/");
         }
       }
     } catch (err) {
@@ -38,7 +38,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center h-[82vh] bg-white">
+    <div className="flex items-center justify-center min-h-screen bg-white">
       <div className="w-full max-w-3xl flex flex-col md:flex-row items-center justify-center gap-8">
         
         {/* Left - Form */}

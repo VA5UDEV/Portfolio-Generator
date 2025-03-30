@@ -5,7 +5,7 @@ export default function PortfolioBuilder() {
   const [userData, setUserData] = useState(null);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [isFinalized, setIsFinalized] = useState(false);
-  const [step, setStep] = useState(1); // 1: Form, 2: Template Selection, 3: Preview & Export
+  const [step, setStep] = useState(1);
 
   const handleFormSubmit = (data) => {
     setUserData(data);
@@ -30,9 +30,9 @@ export default function PortfolioBuilder() {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="h-[90vh] mt-6 mb-10 container mx-auto py-8 px-4">
       {/* Progress Steps */}
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-center">
         <div className="flex items-center">
           <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-300'}`}>1</div>
           <div className={`w-16 h-1 ${step >= 2 ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
