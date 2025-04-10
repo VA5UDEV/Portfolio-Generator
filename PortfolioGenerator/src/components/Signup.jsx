@@ -143,7 +143,9 @@ export default function Signup() {
         {/* Right - Social Login Section */}
         <div className="w-1/2 flex flex-col items-center">
           <div className="w-full space-y-4 pl-8">
-            <Button className="w-full flex items-center justify-center border bg-white text-gray-900 shadow-sm hover:bg-gray-100 transition duration-300">
+            <Button
+            onClick={() => authService.googleLogin()}
+            className="w-full flex items-center justify-center border bg-white text-gray-900 shadow-sm hover:bg-gray-100 transition duration-300">
               <img
                 src="https://www.svgrepo.com/show/475656/google-color.svg"
                 alt="Google"

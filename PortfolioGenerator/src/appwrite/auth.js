@@ -40,6 +40,16 @@ export class AuthService {
     }
   }
 
+  // ✅ NEW: Login with Google OAuth
+  async loginWithGoogle() {
+    try {
+      this.account.createOAuth2Session("google");
+    } catch (error) {
+      console.error("Google Login error:", error.message);
+      throw error;
+    }
+  }
+
   async getCurrentUser() {
     try {
       return await this.account.get();

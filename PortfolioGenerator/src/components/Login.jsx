@@ -40,7 +40,6 @@ export default function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-white">
       <div className="w-full max-w-3xl flex flex-col md:flex-row items-center justify-center gap-8">
-        
         {/* Left - Form */}
         <div className="w-full max-w-sm text-center">
           <h2 className="text-3xl font-bold text-gray-900">Log In</h2>
@@ -79,9 +78,9 @@ export default function Login() {
             </div>
 
             <div className="flex justify-between">
-            <Link to="/forgot" className="text-blue-600 hover:underline">
-              Forget Password
-            </Link>
+              <Link to="/forgot" className="text-blue-600 hover:underline">
+                Forget Password
+              </Link>
             </div>
 
             <Button
@@ -103,7 +102,10 @@ export default function Login() {
 
         {/* Right - Social Logins */}
         <div className="w-full max-w-sm space-y-3">
-          <Button className="w-full bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 flex items-center justify-center py-3">
+          <Button
+            onClick={() => authService.googleLogin()}
+            className="w-full bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 flex items-center justify-center py-3"
+          >
             <img
               src="https://www.svgrepo.com/show/475656/google-color.svg"
               alt="Google"

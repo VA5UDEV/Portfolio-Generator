@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Login from "./components/Login";
 import ForgetPass from "./pages/ForgetPass";
 import Signup from "./pages/Signup";
+import ViewTemplates from "./pages/ViewTemplates";
 import AuthLayout from "./components/AuthLayout";
 import PortfolioBuilder from "./components/portfolio-builder/PortfolioBuilder";
 
@@ -59,6 +60,14 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout authentication={true}>
             <PortfolioBuilder />
+          </AuthLayout>
+        ),
+      },
+      {
+        path: "/templates",
+        element: (
+          <AuthLayout authentication={true}>
+            <ViewTemplates />
           </AuthLayout>
         ),
       },
