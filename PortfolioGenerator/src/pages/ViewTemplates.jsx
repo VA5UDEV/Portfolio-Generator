@@ -1,29 +1,34 @@
 import React from "react";
+import img1 from "../assets/minimalist.png";
+import img2 from "../assets/creative.png";
+import img3 from "../assets/modern.png";
+import img4 from "../assets/professional.png";
+import img5 from "../assets/classic.png";
 
 const templates = [
   {
     name: "Minimalist",
-    image: "/templates/minimalist.png",
+    image: img1,
     description: "Simple layout with clean lines and focus on content.",
   },
   {
     name: "Creative",
-    image: "/templates/creative.png",
+    image: img2,
     description: "A vibrant layout for showcasing creative projects.",
   },
   {
     name: "Modern",
-    image: "/templates/modern.png",
+    image: img3,
     description: "Sleek design with modern UI components and dark mode.",
   },
   {
     name: "Professional",
-    image: "/templates/professional.png",
+    image: img4,
     description: "Perfect for resumes and job applications.",
   },
   {
     name: "Classic",
-    image: "/templates/classic.png",
+    image: img5,
     description: "Timeless layout with structured sections.",
   },
 ];
