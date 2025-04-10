@@ -35,27 +35,33 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white">
-      <div className="w-full max-w-3xl flex items-center justify-between">
+    <div className="flex items-center justify-center min-h-screen bg-white p-4">
+      <div className="w-full max-w-3xl flex flex-col md:flex-row items-center justify-between bg-white rounded-lg shadow-md p-6">
         {/* Left - Form Section */}
-        <div className="w-1/2 pr-8">
-          <h1 className="text-3xl font-semibold text-gray-900">Sign Up</h1>
-          <p className="text-gray-600 mt-2">
+        <div className="w-full md:w-1/2 md:pr-8">
+          <h1 className="text-3xl font-bold text-gray-900 text-center md:text-left">
+            Sign Up
+          </h1>
+          <p className="text-gray-600 mt-2 text-center md:text-left">
             Already have an account?{" "}
             <Link to="/login" className="text-blue-600 hover:underline">
               Log In
             </Link>
           </p>
 
-          {error && <p className="text-red-600 mt-4">{error}</p>}
+          {error && <p className="text-red-600 mt-4 text-sm">{error}</p>}
 
           <form onSubmit={handleSubmit(signUp)} className="mt-6 space-y-4">
             <div>
-              <Label></Label>
+              <Label htmlFor="email" className="sr-only">
+                Email
+              </Label>
               <Input
+                id="email"
                 {...register("email", { required: "Email is required" })}
                 type="email"
                 placeholder="Email"
+                className="w-full border-b border-gray-300 px-2 py-3 focus:outline-none focus:border-gray-500"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -63,8 +69,11 @@ export default function Signup() {
             </div>
 
             <div>
-              <Label></Label>
+              <Label htmlFor="confirmEmail" className="sr-only">
+                Confirm Email
+              </Label>
               <Input
+                id="confirmEmail"
                 {...register("confirmEmail", {
                   required: "Confirm Email is required",
                   validate: (value) =>
@@ -72,6 +81,7 @@ export default function Signup() {
                 })}
                 type="email"
                 placeholder="Confirm Email"
+                className="w-full border-b border-gray-300 px-2 py-3 focus:outline-none focus:border-gray-500"
               />
               {errors.confirmEmail && (
                 <p className="text-red-500 text-sm">
@@ -81,8 +91,11 @@ export default function Signup() {
             </div>
 
             <div>
-              <Label></Label>
+              <Label htmlFor="password" className="sr-only">
+                Password
+              </Label>
               <Input
+                id="password"
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
@@ -101,6 +114,7 @@ export default function Signup() {
                 })}
                 type="password"
                 placeholder="Password"
+                className="w-full border-b border-gray-300 px-2 py-3 focus:outline-none focus:border-gray-500"
               />
               {errors.password && (
                 <p className="text-red-500 text-sm">
@@ -110,8 +124,11 @@ export default function Signup() {
             </div>
 
             <div>
-              <Label></Label>
+              <Label htmlFor="confirmPassword" className="sr-only">
+                Confirm Password
+              </Label>
               <Input
+                id="confirmPassword"
                 {...register("confirmPassword", {
                   required: "Confirm Password is required",
                   validate: (value) =>
@@ -119,6 +136,7 @@ export default function Signup() {
                 })}
                 type="password"
                 placeholder="Confirm Password"
+                className="w-full border-b border-gray-300 px-2 py-3 focus:outline-none focus:border-gray-500"
               />
               {errors.confirmPassword && (
                 <p className="text-red-500 text-sm">
@@ -127,25 +145,32 @@ export default function Signup() {
               )}
             </div>
 
-            {/* Updated Button with Hover Effect */}
             <Button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 hover:bg-blue-700 transition duration-300"
+              className="w-full bg-blue-600 text-white py-3 hover:bg-blue-700 rounded-md transition duration-300"
             >
               Continue with Email →
             </Button>
           </form>
         </div>
 
-        {/* Vertical Divider */}
-        <div className="w-px h-64 bg-gray-300"></div>
+        {/* Vertical Divider - visible only on md+ screens */}
+        <div className="hidden md:block w-px h-auto bg-gray-300 mx-4"></div>
+
+        {/* Horizontal Divider - visible only on mobile */}
+        <div className="md:hidden flex items-center w-full my-6">
+          <div className="flex-grow border-t border-gray-300"></div>
+          <span className="px-3 text-gray-500 text-sm">or</span>
+          <div className="flex-grow border-t border-gray-300"></div>
+        </div>
 
         {/* Right - Social Login Section */}
-        <div className="w-1/2 flex flex-col items-center">
-          <div className="w-full space-y-4 pl-8">
+        <div className="w-full md:w-1/2 flex flex-col items-center">
+          <div className="w-full space-y-4 md:pl-8">
             <Button
-            onClick={() => authService.loginWithGoogle()}
-            className="w-full flex items-center justify-center border bg-white text-gray-900 shadow-sm hover:bg-gray-100 transition duration-300">
+              onClick={() => authService.loginWithGoogle()}
+              className="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 shadow-sm hover:bg-gray-100 py-3 rounded-md transition duration-300"
+            >
               <img
                 src="https://www.svgrepo.com/show/475656/google-color.svg"
                 alt="Google"
@@ -153,13 +178,21 @@ export default function Signup() {
               />
               Continue with Google
             </Button>
-            <Button className="w-full flex items-center justify-center border bg-white text-gray-900 shadow-sm hover:bg-gray-100 transition duration-300">
+            <Button className="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 shadow-sm hover:bg-gray-100 py-3 rounded-md transition duration-300">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
                 alt="Facebook"
                 className="w-5 h-5 mr-2"
               />
               Continue with Facebook
+            </Button>
+            <Button className="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 shadow-sm hover:bg-gray-100 py-3 rounded-md transition duration-300">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
+                alt="Apple"
+                className="w-5 h-5 mr-2"
+              />
+              Continue with Apple
             </Button>
           </div>
         </div>
