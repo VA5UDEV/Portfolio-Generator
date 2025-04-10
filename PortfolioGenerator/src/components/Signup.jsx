@@ -36,13 +36,11 @@ export default function Signup() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-white p-4">
-      <div className="w-full max-w-3xl flex flex-col md:flex-row items-center justify-between bg-white rounded-lg shadow-md p-6">
-        {/* Left - Form Section */}
-        <div className="w-full md:w-1/2 md:pr-8">
-          <h1 className="text-3xl font-bold text-gray-900 text-center md:text-left">
-            Sign Up
-          </h1>
-          <p className="text-gray-600 mt-2 text-center md:text-left">
+      <div className="w-full max-w-3xl flex flex-col md:flex-row items-center justify-center gap-8 bg-white rounded-lg shadow-md p-6 mt-6">
+        {/* Left - Form */}
+        <div className="w-full max-w-sm text-center md:text-left">
+          <h2 className="text-3xl font-bold text-gray-900">Sign Up</h2>
+          <p className="text-gray-600 mt-1">
             Already have an account?{" "}
             <Link to="/login" className="text-blue-600 hover:underline">
               Log In
@@ -147,54 +145,50 @@ export default function Signup() {
 
             <Button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 hover:bg-blue-700 rounded-md transition duration-300"
+              className="w-full bg-blue-600 text-white py-3 hover:bg-blue-700 mt-2 rounded-md transition duration-300"
             >
               Continue with Email →
             </Button>
           </form>
         </div>
 
-        {/* Vertical Divider - visible only on md+ screens */}
-        <div className="hidden md:block w-px h-auto bg-gray-300 mx-4"></div>
-
-        {/* Horizontal Divider - visible only on mobile */}
+        {/* Divider - exactly matching Login component */}
+        <div className="hidden md:block w-px h-64 bg-gray-300"></div>
         <div className="md:hidden flex items-center w-full my-6">
           <div className="flex-grow border-t border-gray-300"></div>
           <span className="px-3 text-gray-500 text-sm">or</span>
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
 
-        {/* Right - Social Login Section */}
-        <div className="w-full md:w-1/2 flex flex-col items-center">
-          <div className="w-full space-y-4 md:pl-8">
-            <Button
-              onClick={() => authService.loginWithGoogle()}
-              className="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 shadow-sm hover:bg-gray-100 py-3 rounded-md transition duration-300"
-            >
-              <img
-                src="https://www.svgrepo.com/show/475656/google-color.svg"
-                alt="Google"
-                className="w-5 h-5 mr-2"
-              />
-              Continue with Google
-            </Button>
-            <Button className="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 shadow-sm hover:bg-gray-100 py-3 rounded-md transition duration-300">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
-                alt="Facebook"
-                className="w-5 h-5 mr-2"
-              />
-              Continue with Facebook
-            </Button>
-            <Button className="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 shadow-sm hover:bg-gray-100 py-3 rounded-md transition duration-300">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
-                alt="Apple"
-                className="w-5 h-5 mr-2"
-              />
-              Continue with Apple
-            </Button>
-          </div>
+        {/* Right - Social Logins */}
+        <div className="w-full max-w-sm space-y-3">
+          <Button
+            onClick={() => authService.loginWithGoogle()}
+            className="w-full bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 flex items-center justify-center py-3 rounded-md transition duration-300"
+          >
+            <img
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="Google"
+              className="w-5 h-5 mr-2"
+            />
+            Continue with Google
+          </Button>
+          <Button className="w-full bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 flex items-center justify-center py-3 rounded-md transition duration-300">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
+              alt="Facebook"
+              className="w-5 h-5 mr-2"
+            />
+            Continue with Facebook
+          </Button>
+          <Button className="w-full bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 flex items-center justify-center py-3 rounded-md transition duration-300">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
+              alt="Apple"
+              className="w-5 h-5 mr-2"
+            />
+            Continue with Apple
+          </Button>
         </div>
       </div>
     </div>
